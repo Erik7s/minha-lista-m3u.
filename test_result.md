@@ -101,3 +101,235 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: >
+  Ethos - App de integridade e compromisso pessoal. O usuário define desafios com recompensas,
+  bloqueia o compromisso (sem edição), faz check-ins diários (Sim/Não), e ao final do prazo
+  responde "Você foi íntegro?" - se sim, celebração + compartilhamento; se não, reflexão + reset.
+  Suporte bilíngue (PT/EN), múltiplos desafios simultâneos, compartilhamento nativo.
+
+backend:
+  - task: "GET /api/ - Root health check"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Root endpoint returns Ethos API message, tested with curl"
+
+  - task: "POST /api/challenges - Create challenge"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Creates challenge in draft status, tested with curl"
+
+  - task: "GET /api/challenges - List challenges"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Lists all challenges, supports status filter, tested with curl"
+
+  - task: "POST /api/challenges/{id}/lock - Lock challenge"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Locks challenge, sets status=locked, irreversible, tested with curl"
+
+  - task: "POST /api/challenges/{id}/checkin - Daily check-in"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Creates daily check-in, prevents duplicate same-day checkins, tested with curl"
+
+  - task: "GET /api/challenges/{id}/checkins - List check-ins"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Returns all check-ins sorted by date desc, tested with curl"
+
+  - task: "POST /api/challenges/{id}/judgment - Final judgment"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Implemented - sets status to completed or failed based on was_honest boolean"
+
+  - task: "GET/POST /api/settings - User settings"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Implemented - supports language and notification_time settings"
+
+frontend:
+  - task: "Tab Navigation (Home, Create, History)"
+    implemented: true
+    working: "NA"
+    file: "frontend/app/(tabs)/_layout.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "3-tab layout with Ionicons, proper styling"
+
+  - task: "Home Dashboard - Active challenges list"
+    implemented: true
+    working: "NA"
+    file: "frontend/app/(tabs)/index.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Shows locked challenges with progress, days remaining, streak count"
+
+  - task: "Create Challenge - Form + Lock flow"
+    implemented: true
+    working: "NA"
+    file: "frontend/app/(tabs)/create.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Full form with preview modal and lock confirmation"
+
+  - task: "Challenge Detail - Check-in flow"
+    implemented: true
+    working: "NA"
+    file: "frontend/app/challenge/[id].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Shows challenge details, progress, reward, daily check-in modal"
+
+  - task: "Judgment Screen - Final integrity question"
+    implemented: true
+    working: "NA"
+    file: "frontend/app/challenge/judgment/[id].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Shows stats and asks 'Were you honest?' with Yes/No"
+
+  - task: "Celebration Screen - Success + Share"
+    implemented: true
+    working: "NA"
+    file: "frontend/app/challenge/celebration/[id].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Shows trophy, stats, reward, native share button"
+
+  - task: "History Screen - Completed/Failed challenges"
+    implemented: true
+    working: "NA"
+    file: "frontend/app/(tabs)/history.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Shows completed and failed challenges with status badges"
+
+  - task: "Settings Screen - Language switcher"
+    implemented: true
+    working: "NA"
+    file: "frontend/app/settings.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Language selector EN/PT with AsyncStorage persistence"
+
+  - task: "Bilingual Support (EN/PT)"
+    implemented: true
+    working: "NA"
+    file: "frontend/contexts/LanguageContext.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Full translations in constants/translations.ts, context provider wraps all screens"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "All backend API endpoints"
+    - "Frontend tab navigation and screen rendering"
+    - "Create Challenge + Lock flow"
+    - "Challenge Detail + Check-in flow"
+  stuck_tasks: []
+  test_all: true
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "main"
+      message: "Full MVP implemented. Backend APIs tested with curl - all working. Frontend has all screens with tab navigation, create flow, detail view, judgment, celebration, history, and settings. Ready for comprehensive testing."
