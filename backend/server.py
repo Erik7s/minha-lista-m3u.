@@ -152,6 +152,8 @@ async def get_challenge(challenge_id: str):
         if not challenge:
             raise HTTPException(status_code=404, detail="Challenge not found")
         return challenge_helper(challenge)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
